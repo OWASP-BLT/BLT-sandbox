@@ -1,0 +1,248 @@
+name: Issue Feature Showcase Comment
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+
+jobs:
+  add-showcase-comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add showcase comment to issue
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issueNumber = context.issue.number;
+            const issueTitle = context.payload.issue.title;
+            const issueAuthor = context.payload.issue.user.login;
+            const repoOwner = context.repo.owner;
+            const repoName = context.repo.repo;
+            
+            // Construct the Copilot agent URL with issue context
+            const copilotAgentUrl = `https://github.com/copilot?prompt=${encodeURIComponent(`Help me with issue #${issueNumber}: ${issueTitle}`)}`;
+            
+            const commentBody = `
+            # 🎉 Welcome to the Issue Feature Showcase!
+            
+            > **Hello @${issueAuthor}!** Thanks for opening this issue. Here's a comprehensive guide to all the features available in GitHub Issues.
+            
+            ---
+            
+            ## 🔘 Interactive Buttons & Links
+            
+            | Action | Link |
+            |--------|------|
+            | 🤖 **Ask Copilot for Help** | [💬 Send to GitHub Copilot](${copilotAgentUrl}) |
+            | 📝 **Edit Issue** | [Edit this issue](../../issues/${issueNumber}/edit) |
+            | 🏷️ **Add Labels** | [Manage Labels](../../labels) |
+            | 📋 **View All Issues** | [All Issues](../../issues) |
+            | 🔍 **Search Issues** | [Search](../../issues?q=is%3Aissue) |
+            
+            ---
+            
+            ## 📋 Task Lists & Checkboxes
+            
+            Use checkboxes to track progress:
+            
+            - [ ] 📖 Read the documentation
+            - [ ] 🔬 Investigate the issue
+            - [ ] 💡 Propose a solution
+            - [ ] 🛠️ Implement the fix
+            - [ ] ✅ Test the changes
+            - [ ] 📤 Submit a pull request
+            - [x] ✨ Open an issue (You did this!)
+            
+            ---
+            
+            ## 💡 Tips, Notes & Alerts
+            
+            > [!NOTE]
+            > 📝 **Note:** This is a note callout - useful for additional information.
+            
+            > [!TIP]
+            > 💡 **Tip:** Use labels to categorize issues and make them easier to find!
+            
+            > [!IMPORTANT]
+            > ⚠️ **Important:** Make sure to provide all relevant details when reporting bugs.
+            
+            > [!WARNING]
+            > 🚨 **Warning:** Please follow the code of conduct when participating.
+            
+            > [!CAUTION]
+            > ❌ **Caution:** Do not share sensitive information in issue comments.
+            
+            ---
+            
+            ## 🏅 Badges & Status Indicators
+            
+            | Badge | Description |
+            |-------|-------------|
+            | ![Status](https://img.shields.io/badge/Status-Open-brightgreen?style=flat-square) | Issue Status |
+            | ![Priority](https://img.shields.io/badge/Priority-Medium-yellow?style=flat-square) | Priority Level |
+            | ![Type](https://img.shields.io/badge/Type-Feature-blue?style=flat-square) | Issue Type |
+            | ![Help Wanted](https://img.shields.io/badge/Help-Wanted-purple?style=flat-square) | Contribution Status |
+            | ![Good First Issue](https://img.shields.io/badge/Good%20First%20Issue-Yes-success?style=flat-square) | Beginner Friendly |
+            | ![Difficulty](https://img.shields.io/badge/Difficulty-Easy-00ff00?style=flat-square) | Difficulty Level |
+            
+            ---
+            
+            ## 🎨 Colors & Formatting
+            
+            ### Text Formatting
+            
+            | Style | Example | Syntax |
+            |-------|---------|--------|
+            | **Bold** | **Important text** | \`**text**\` |
+            | *Italic* | *Emphasized text* | \`*text*\` |
+            | ~~Strikethrough~~ | ~~Deleted text~~ | \`~~text~~\` |
+            | \`Code\` | \`inline code\` | \`\\\`code\\\`\` |
+            
+            ### Colored Badges
+            
+            ![Red](https://img.shields.io/badge/-Red-red?style=flat-square)
+            ![Orange](https://img.shields.io/badge/-Orange-orange?style=flat-square)
+            ![Yellow](https://img.shields.io/badge/-Yellow-yellow?style=flat-square)
+            ![Green](https://img.shields.io/badge/-Green-green?style=flat-square)
+            ![Blue](https://img.shields.io/badge/-Blue-blue?style=flat-square)
+            ![Purple](https://img.shields.io/badge/-Purple-purple?style=flat-square)
+            ![Pink](https://img.shields.io/badge/-Pink-ff69b4?style=flat-square)
+            ![Gray](https://img.shields.io/badge/-Gray-gray?style=flat-square)
+            
+            ---
+            
+            ## 🔗 Quick Actions for Copilot Agent
+            
+            Click any button below to get AI-powered assistance:
+            
+            | 🤖 Copilot Actions | |
+            |-------------------|---|
+            | [![Ask for Help](https://img.shields.io/badge/🤖_Ask_Copilot-Help_with_this_issue-8A2BE2?style=for-the-badge)](${copilotAgentUrl}) | Get general help |
+            | [![Debug](https://img.shields.io/badge/🐛_Debug-Analyze_the_problem-red?style=for-the-badge)](https://github.com/copilot?prompt=${encodeURIComponent(`Debug issue #${issueNumber}: ${issueTitle}`)}) | Debug assistance |
+            | [![Code Review](https://img.shields.io/badge/📝_Review-Suggest_improvements-blue?style=for-the-badge)](https://github.com/copilot?prompt=${encodeURIComponent(`Review and suggest improvements for issue #${issueNumber}: ${issueTitle}`)}) | Code review |
+            | [![Documentation](https://img.shields.io/badge/📚_Docs-Generate_documentation-green?style=for-the-badge)](https://github.com/copilot?prompt=${encodeURIComponent(`Generate documentation for issue #${issueNumber}: ${issueTitle}`)}) | Documentation help |
+            
+            ---
+            
+            ## 📊 Icons Reference
+            
+            | Category | Icons |
+            |----------|-------|
+            | **Status** | ✅ ❌ ⏳ 🔄 ⚠️ 🚧 |
+            | **Priority** | 🔴 🟠 🟡 🟢 🔵 |
+            | **Type** | 🐛 ✨ 📝 🔧 🚀 💡 |
+            | **Labels** | 🏷️ 📌 🎯 💎 🔖 |
+            | **Actions** | 👀 💬 📤 📥 🔍 🛠️ |
+            | **People** | 👤 👥 🤖 👨‍💻 👩‍💻 |
+            
+            ---
+            
+            ## 📜 Code Blocks
+            
+            \`\`\`python
+            # Example: How to interact with GitHub Issues API
+            import requests
+            
+            def get_issue(owner, repo, issue_number):
+                url = f"https://api.github.com/repos/{owner}/{repo}/issues/{issue_number}"
+                response = requests.get(url)
+                return response.json()
+            \`\`\`
+            
+            \`\`\`javascript
+            // Example: Creating an issue comment
+            async function addComment(issueNumber, body) {
+                await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issueNumber,
+                    body: body
+                });
+            }
+            \`\`\`
+            
+            ---
+            
+            ## 📋 Collapsible Sections
+            
+            <details>
+            <summary>📖 Click to expand: Additional Resources</summary>
+            
+            ### Useful Links
+            - [GitHub Docs - Issues](https://docs.github.com/en/issues)
+            - [GitHub Flavored Markdown](https://github.github.com/gfm/)
+            - [GitHub Actions](https://docs.github.com/en/actions)
+            - [Shields.io Badges](https://shields.io/)
+            
+            ### Keyboard Shortcuts
+            | Shortcut | Action |
+            |----------|--------|
+            | \`g i\` | Go to Issues |
+            | \`c\` | Create new issue |
+            | \`l\` | Open labels |
+            | \`?\` | Show all shortcuts |
+            
+            </details>
+            
+            <details>
+            <summary>🔧 Click to expand: Issue Templates</summary>
+            
+            ### Bug Report Template
+            \`\`\`markdown
+            **Describe the bug**
+            A clear description of the bug.
+            
+            **To Reproduce**
+            Steps to reproduce:
+            1. Go to '...'
+            2. Click on '...'
+            3. See error
+            
+            **Expected behavior**
+            What you expected to happen.
+            
+            **Screenshots**
+            If applicable, add screenshots.
+            \`\`\`
+            
+            </details>
+            
+            ---
+            
+            ## 🤝 Contributing
+            
+            | Step | Action | Status |
+            |------|--------|--------|
+            | 1️⃣ | Fork the repository | ![Fork](https://img.shields.io/badge/Fork-Repository-blue?style=flat-square) |
+            | 2️⃣ | Create a branch | ![Branch](https://img.shields.io/badge/Create-Branch-orange?style=flat-square) |
+            | 3️⃣ | Make changes | ![Changes](https://img.shields.io/badge/Make-Changes-yellow?style=flat-square) |
+            | 4️⃣ | Submit PR | ![PR](https://img.shields.io/badge/Submit-PR-green?style=flat-square) |
+            
+            ---
+            
+            <div align="center">
+            
+            ### 🌟 Star this repo if you found this helpful! 🌟
+            
+            [![Star](https://img.shields.io/github/stars/${repoOwner}/${repoName}?style=social)](../../stargazers)
+            [![Watch](https://img.shields.io/github/watchers/${repoOwner}/${repoName}?style=social)](../../watchers)
+            [![Fork](https://img.shields.io/github/forks/${repoOwner}/${repoName}?style=social)](../../forks)
+            
+            ---
+            
+            *This comment was automatically generated by a GitHub Action to showcase issue features.*
+            
+            </div>
+            `;
+            
+            await github.rest.issues.createComment({
+              owner: repoOwner,
+              repo: repoName,
+              issue_number: issueNumber,
+              body: commentBody
+            });
+            
+            console.log(`✅ Showcase comment added to issue #${issueNumber}`);
